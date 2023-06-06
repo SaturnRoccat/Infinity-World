@@ -33,7 +33,6 @@ void Chunk::createChunkData()
                     noiseValue = std::max(noiseValue, 0.0f); // Clamp the noise value to ensure it doesn't go below 0
                 }
 
-
                 noiseValue = (2.0f * noiseValue) - 1.0f; // Rescale noise value from range 0 to 1 to range -1 to 1
 
                 if (noiseValue > threshold)
