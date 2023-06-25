@@ -1,0 +1,17 @@
+-r
+E:\Projects\Cpp\LiteLoaderPluginInfinityWorld\LiteLoaderPluginInfinityWorld\Intel® VTune™ Profiler Results\LLPIW\r001ps4
+--stack-stitching
+--data-limit-mb=1000
+--disk-space-limit=0
+--mrte-type=java,dotnet
+--stack-unwind-limit=8388608
+--itt-config=frame
+--stackwalk=offline
+--mrte-mode=auto
+--type=cpu:counters:nostack
+--type=cpu:nostack
+--interval=100
+--start-paused
+--app-working-dir=E:\Projects\Cpp\LiteLoaderPluginInfinityWorld\LiteLoaderPluginInfinityWorld\
+--
+E:\Projects\DevEnvys\BedrockEditionServer\bedrock_server_mod.exe

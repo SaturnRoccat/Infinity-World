@@ -6,6 +6,7 @@
 #include <memory>
 #include <llapi/LoggerAPI.h>
 
+
 class chunkPosition
 {
 public:
@@ -54,8 +55,18 @@ public:
 class Chunk
 {
 public:
-    Chunk(chunkPosition worldPositionOfChunk, FastNoiseLite *noise, int xSize = 16, int ySize = 300, int zSize = 16)
-        : worldPositionOfChunk(worldPositionOfChunk), _noise(noise), xSize(xSize), ySize(ySize), zSize(zSize) 
+    Chunk(chunkPosition worldPositionOfChunk,
+        FastNoiseLite *noise,
+        std::unordered_map<uint8_t, std::string>* TD,
+        int xSize = 16,
+        int ySize = 300,
+        int zSize = 16)
+        : worldPositionOfChunk(worldPositionOfChunk),
+        _noise(noise),
+        _tileData(TD),
+        xSize(xSize),
+        ySize(ySize),
+        zSize(zSize) 
     {};
 
     void createChunkData();
@@ -70,6 +81,6 @@ private:
     std::vector<std::vector<std::vector<uint8_t>>> _chunkData;
     FastNoiseLite* _noise;
 
-
+    std::unordered_map<uint8_t, std::string>* _tileData;
 };
 

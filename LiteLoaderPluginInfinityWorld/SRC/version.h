@@ -10,7 +10,11 @@
 #define PLUGIN_VERSION_BETA 1
 #define PLUGIN_VERSION_RELEASE 2
 
+/*
 
+bedrock_server_api.lib
+bedrock_server_var.lib
+*/
  // ***************************************************************************************
  // ***************************************************************************************
  // ***************************************************************************************
@@ -44,7 +48,7 @@
 // please start the latest version of LiteLoaderBDS and get the protocol version.
 // If you are confident about the version compatibility of your plugin, you can
 // just comment this line (NOT RECOMMENDED).
-#define TARGET_BDS_PROTOCOL_VERSION 582
+#define TARGET_BDS_PROTOCOL_VERSION 589
 
 // ***************************************************************************************
 // ***************************************************************************************

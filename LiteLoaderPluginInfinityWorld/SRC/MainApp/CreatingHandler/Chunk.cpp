@@ -1,5 +1,5 @@
 #include "Chunk.h"
-#include <llapi\mc\Level.hpp>
+#include "..\Util\WorldUtils.h"
 extern Logger logger;
 
 void Chunk::createChunkData()
@@ -13,6 +13,7 @@ void Chunk::createChunkData()
         std::vector<std::vector<uint8_t>> xPush;
         for (int y = 0; y < ySize; y++)
         {
+
                 std::vector<uint8_t> yPush;
                 for (int z = 0; z < zSize; z++)
             {
@@ -21,8 +22,10 @@ void Chunk::createChunkData()
                     float(y),
                     float(((worldPositionOfChunk.z * 16) + z) / 2));
 
+
                 noiseValue = (noiseValue + 1.0f) / 2.0f; // Normalize noise value from range -1 to 1 to range 0 to 1
                 if (y < worldTaper && noiseValue > threshold) {
+
                     // Calculate the normalized t value between 0 and 1
                     float t = 1.0f - (static_cast<float>(worldTaper - y) / worldTaper);
 
@@ -31,6 +34,7 @@ void Chunk::createChunkData()
 
                     noiseValue -= modifiedBias; // Subtract the modified bias from the noise value
                     noiseValue = std::max(noiseValue, 0.0f); // Clamp the noise value to ensure it doesn't go below 0
+
                 }
 
 
@@ -55,27 +59,21 @@ void Chunk::createChunkData()
 
 void Chunk::placeChunkData()
 {
-    for (int x = 0; x < 16; x++)
+    for (int x = 0; x < xSize; x++)
     {
-        for (int y = 0; y < ySize; y++)
+        int OverallX = int(((worldPositionOfChunk.x * 16) + x) / 2);
+
+        for (int z = 0; z < zSize; z++)
         {
-
-            for (int z = 0; z < 16; z++)
+            int OverallZ = int(((worldPositionOfChunk.z * 16) + z) / 2);
+            for (int y = 0; y < ySize; y++)
             {
-                
-                BlockPos position(int(((worldPositionOfChunk.x * 16) + x) / 2), int(y), int(((worldPositionOfChunk.z * 16) + z) / 2));
-                switch (_chunkData[x][y][z])
-                {
-                    case 0u: {
-                        Level::setBlock(position, 0, "minecraft:air", 0);
-                        break;
-                    }
-                    case 1u: {
-                        Level::setBlock(position, 0, "minecraft:stone", 0);
 
-                        break;
-                    }
-                }
+                BlockPos position(OverallX, int(y), OverallZ);
+                // note this wont support multi dimensions so this needs to be changed 
+                WorldUtils::WUSetBlock(position, _tileData->at(_chunkData[x][y][z]));
+
+                // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
             }
         }
     }

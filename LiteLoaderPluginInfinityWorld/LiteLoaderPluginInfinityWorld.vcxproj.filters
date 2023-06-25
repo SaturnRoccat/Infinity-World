@@ -24,6 +24,24 @@
     <ClInclude Include="SRC\MainApp\CreatingHandler\Chunk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SRC\MainApp\Palate\biomePalate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\Util\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseSegment\NoiseSegment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\Util\math.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\Util\WorldUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\dllmain.cpp">
@@ -36,6 +54,27 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\MainApp\CreatingHandler\Chunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\Palate\biomePalate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\finalizeData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\constructData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\Util\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseSegment\NoiseSegment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\Util\WorldUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
