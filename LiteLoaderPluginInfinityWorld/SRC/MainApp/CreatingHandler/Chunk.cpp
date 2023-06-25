@@ -4,7 +4,7 @@ extern Logger logger;
 
 void Chunk::createChunkData()
 {
-    const static int worldTaper = 50;
+    const static int worldTaper = 20;
     const static float threshold = 0.2;
     const static float bias = 0.4f;
 
@@ -14,14 +14,29 @@ void Chunk::createChunkData()
         for (int y = 0; y < ySize; y++)
         {
 
-                std::vector<uint8_t> yPush;
-                for (int z = 0; z < zSize; z++)
+            std::vector<uint8_t> yPush;
+            for (int z = 0; z < zSize; z++)
             {
-                float noiseValue = _noise->GetNoise(
+
+                /*
+                * (
                     float(((worldPositionOfChunk.x * 16) + x) / 2),
                     float(y),
-                    float(((worldPositionOfChunk.z * 16) + z) / 2));
+                    float(((worldPositionOfChunk.z * 16) + z) / 2))
+                */
 
+                
+                float sampleX = (((worldPositionOfChunk.x * 16) + x) / 2) * 1.4;
+                float sampleZ = (((worldPositionOfChunk.z * 16) + z) / 2) * 1.4;
+
+
+
+
+
+                float noiseValue = _noise->GetNoise(
+                    sampleX,
+                    float(y * 3),
+                    sampleZ);
 
                 noiseValue = (noiseValue + 1.0f) / 2.0f; // Normalize noise value from range -1 to 1 to range 0 to 1
                 if (y < worldTaper && noiseValue > threshold) {
@@ -59,7 +74,7 @@ void Chunk::createChunkData()
 
 void Chunk::placeChunkData()
 {
-    for (int x = 0; x < xSize; x++)
+     for (int x = 0; x < xSize; x++)
     {
         int OverallX = int(((worldPositionOfChunk.x * 16) + x) / 2);
 
@@ -69,7 +84,7 @@ void Chunk::placeChunkData()
             for (int y = 0; y < ySize; y++)
             {
 
-                BlockPos position(OverallX, int(y), OverallZ);
+                BlockPos position(OverallX, int(y - 63), OverallZ);
                 // note this wont support multi dimensions so this needs to be changed 
                 WorldUtils::WUSetBlock(position, _tileData->at(_chunkData[x][y][z]));
 

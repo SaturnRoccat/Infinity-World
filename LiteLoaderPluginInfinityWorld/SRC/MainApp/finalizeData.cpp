@@ -5,19 +5,32 @@
 void InfinityWorld::finalizeData()
 {
 
-    Timer* T = new Timer();
-    T->getTime();
-    for (auto& C : chunkArray)
+    const static int maxPlacementTime = 40;
+
+    long long currentTime = 0;
+    auto arraySize = chunkArray.size();
+    int calculationPosition = 0;
+    Timer* calculationTimer = new Timer();
+    while (currentTime < maxPlacementTime && calculationPosition < arraySize)
     {
-        C->placeChunkData(); // Place chunk data in the world
+        calculationTimer->getTime();
+        auto& chunk = chunkArray.back();
+        if (chunk != nullptr)
+        {
+            chunk->placeChunkData();
+            delete chunk;
+            chunkArray.pop_back();
+        }
+        currentTime += calculationTimer->getTime();
+        calculationPosition++;
+    }
+    if (chunkArray.size() == 0)
+    {
+        dataPlaced = true;
+    }
+    else
+    {
+        dataPlaced = false;
     }
 
-    if (chunkArray.size() > 0)
-    {
-        auto chunkSize = chunkArray.size();
-        logger.warn("Ammount Of Chunks In Array: {}", chunkSize);
-        auto time = T->getTime();
-        logger.warn("Chunk time: {}: For an Average of {}ms Per Chunk", time, time / chunkSize);
-
-    }
 }

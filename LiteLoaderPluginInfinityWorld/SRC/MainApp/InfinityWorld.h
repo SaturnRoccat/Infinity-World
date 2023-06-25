@@ -44,6 +44,13 @@ private:
 
 	void memoryCleanup();
 private:
+
+
+
+
+
+
+
 	std::unordered_map<std::size_t, bool> _loadedBeforeMap; // Stores information about loaded items
 
 	std::unordered_map<uint8_t, std::string> _masterTiledata;
@@ -56,4 +63,6 @@ private:
 	int _tickIndex = 0;
 
 	std::vector<Chunk*> chunkArray; // Moved outside the player loop
+
+	bool dataPlaced = false;
 };

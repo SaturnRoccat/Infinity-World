@@ -59,7 +59,7 @@ public:
         FastNoiseLite *noise,
         std::unordered_map<uint8_t, std::string>* TD,
         int xSize = 16,
-        int ySize = 300,
+        int ySize = 128,
         int zSize = 16)
         : worldPositionOfChunk(worldPositionOfChunk),
         _noise(noise),

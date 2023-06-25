@@ -8,6 +8,7 @@ public:
 	NoiseHandler(FastNoiseLite* FSN)
 		: _fsn(FSN) {};
 public:
+
 	uint16_t pollData(int x, int y, int z);
 	__forceinline uint16_t pollData(int3 pos) { return pollData(pos.x, pos.y, pos.z); }
 

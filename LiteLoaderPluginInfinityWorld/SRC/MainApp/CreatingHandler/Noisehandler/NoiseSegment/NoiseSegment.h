@@ -35,7 +35,7 @@ public:
     NoiseSegment(FastNoiseLite* FSN,
         int2 Offset,
         int3 ChunkSize = { 16, 128, 16 },
-        int3 ChunksToContain = { 64, 64 })
+        int3 ChunksToContain = { 32, 32 })
         : _fsn(FSN),
         _offset(Offset),
         _chunkSize(ChunkSize),

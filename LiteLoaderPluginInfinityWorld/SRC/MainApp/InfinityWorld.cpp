@@ -57,9 +57,12 @@ void InfinityWorld::Init()
 
 void InfinityWorld::memoryCleanup()
 {
-    for (auto& c : chunkArray)
+    if (dataPlaced)
     {
-        delete c;
+        for (auto& c : chunkArray)
+        {
+            delete c;
+        }
     }
 }
 
@@ -78,7 +81,10 @@ void InfinityWorld::cont()
         // This should ALLWAYS be on the last tick
         case 1: {
             finalizeData();
-            _tickIndex++;
+            if (dataPlaced)
+            {
+                _tickIndex++;
+            }
             break;
         }
         // We do this last pass to handle all memory cleanups that are needed becuase of a bug in LL using a std::shared_ptr for auto memory management doesnt 
@@ -86,6 +92,7 @@ void InfinityWorld::cont()
         case 2: {
             memoryCleanup();
             _tickIndex = 0;
+            dataPlaced = false;
             break;
         }
     }
@@ -95,8 +102,9 @@ void InfinityWorld::cont()
 InfinityWorld::InfinityWorld()
 {
 	// Just a temp simplex noise var should never be called in this funct
-	_sn = new FastNoiseLite(9191);
-    _sn->SetNoiseType(FastNoiseLite::NoiseType_Value);
+	_sn = new FastNoiseLite(13213);
+    _sn->SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
+    _sn->SetFractalOctaves(6);
     // _sn->SetFractalType(FastNoiseLite::FractalType_DomainWarpProgressive);
 	pool = new BS::thread_pool(std::thread::hardware_concurrency() / 2);
 }
