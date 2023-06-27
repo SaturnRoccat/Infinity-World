@@ -3,6 +3,7 @@
 #include <llapi\mc\Vec3.hpp>
 
 #include "fastNoiselite.hpp"
+#include "biomeManager\biomeManager.h"
 #include <memory>
 #include <llapi/LoggerAPI.h>
 
@@ -57,13 +58,15 @@ class Chunk
 public:
     Chunk(chunkPosition worldPositionOfChunk,
         FastNoiseLite *noise,
-        std::unordered_map<uint8_t, std::string>* TD,
+        std::vector<std::string>* TD,
+        biomeManager* bm,
         int xSize = 16,
         int ySize = 128,
         int zSize = 16)
         : worldPositionOfChunk(worldPositionOfChunk),
         _noise(noise),
-        _tileData(TD),
+        _tileDataVector(TD),
+        _bm(bm),
         xSize(xSize),
         ySize(ySize),
         zSize(zSize) 
@@ -80,7 +83,7 @@ private:
 private:
     std::vector<std::vector<std::vector<uint8_t>>> _chunkData;
     FastNoiseLite* _noise;
-
-    std::unordered_map<uint8_t, std::string>* _tileData;
+    biomeManager* _bm;
+    std::vector<std::string>* _tileDataVector;
 };
 

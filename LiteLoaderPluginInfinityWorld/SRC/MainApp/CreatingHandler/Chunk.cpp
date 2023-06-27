@@ -1,5 +1,7 @@
 #include "Chunk.h"
 #include "..\Util\WorldUtils.h"
+#include "..\Util\math.hpp"
+#include <math.h>
 extern Logger logger;
 
 void Chunk::createChunkData()
@@ -13,45 +15,34 @@ void Chunk::createChunkData()
         std::vector<std::vector<uint8_t>> xPush;
         for (int y = 0; y < ySize; y++)
         {
-
             std::vector<uint8_t> yPush;
             for (int z = 0; z < zSize; z++)
             {
-
-                /*
-                * (
-                    float(((worldPositionOfChunk.x * 16) + x) / 2),
-                    float(y),
-                    float(((worldPositionOfChunk.z * 16) + z) / 2))
-                */
-
-                
-                float sampleX = (((worldPositionOfChunk.x * 16) + x) / 2) * 1.4;
-                float sampleZ = (((worldPositionOfChunk.z * 16) + z) / 2) * 1.4;
-
-
-
-
+                float sampleX = ((worldPositionOfChunk.x * 16) + x) * 0.7;
+                float sampleZ = ((worldPositionOfChunk.z * 16) + z) * 0.7;
 
                 float noiseValue = _noise->GetNoise(
                     sampleX,
-                    float(y * 3),
+                    float(y),
                     sampleZ);
 
+                // Retrieve moisture value using biomeManager's getData function
+                float moisture = _bm->getData(sampleX, float(y), sampleZ);
+
+                // Apply the moisture to modify the noise value
+                noiseValue = lerp(noiseValue, moisture, 0.35f); // Adjust the blending factor (0.5f) as desired
+
                 noiseValue = (noiseValue + 1.0f) / 2.0f; // Normalize noise value from range -1 to 1 to range 0 to 1
-                if (y < worldTaper && noiseValue > threshold) {
 
-                    // Calculate the normalized t value between 0 and 1
+
+                // Apply the tapering effect based on the y coordinate and threshold
+                if (y < worldTaper && noiseValue > threshold)
+                {
                     float t = 1.0f - (static_cast<float>(worldTaper - y) / worldTaper);
-
-                    // Apply the ease-in exponential function to modify the bias factor
                     float modifiedBias = bias * (1.f - (1.0f - std::pow(2.0f, -10.0f * t)));
-
-                    noiseValue -= modifiedBias; // Subtract the modified bias from the noise value
-                    noiseValue = std::max(noiseValue, 0.0f); // Clamp the noise value to ensure it doesn't go below 0
-
+                    noiseValue -= modifiedBias;
+                    noiseValue = std::max(noiseValue, 0.0f);
                 }
-
 
                 noiseValue = (2.0f * noiseValue) - 1.0f; // Rescale noise value from range 0 to 1 to range -1 to 1
 
@@ -61,7 +52,16 @@ void Chunk::createChunkData()
                 }
                 else
                 {
-                    yPush.push_back(1);
+                    if (moisture < 0)
+                    {
+                        yPush.push_back(1);
+
+                    }
+                    else
+                    {
+                        yPush.push_back(2);
+
+                    }
                 }
             }
             xPush.push_back(yPush);
@@ -69,6 +69,7 @@ void Chunk::createChunkData()
         _chunkData.push_back(xPush);
     }
 }
+
 
 
 
@@ -86,7 +87,7 @@ void Chunk::placeChunkData()
 
                 BlockPos position(OverallX, int(y - 63), OverallZ);
                 // note this wont support multi dimensions so this needs to be changed 
-                WorldUtils::WUSetBlock(position, _tileData->at(_chunkData[x][y][z]));
+                WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
 
                 // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
             }
