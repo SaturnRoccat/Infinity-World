@@ -13,7 +13,7 @@
 #include "BS_thread_pool.hpp"
 #include "CreatingHandler\Noisehandler\NoiseHandler.h"
 #include "CreatingHandler\Noisehandler\NoiseSegment\NoiseSegment.h"
-
+#include "CreatingHandler\biomeManager\biomeManager.h"
 // STD
 
 #include <string>
@@ -51,18 +51,24 @@ private:
 
 
 
-	std::unordered_map<std::size_t, bool> _loadedBeforeMap; // Stores information about loaded items
+	std::unordered_map<std::size_t, bool> _loadedBeforeMap;		// Stores information about loaded items
 
 	std::unordered_map<uint8_t, std::string> _masterTiledata;
 
-	BS::thread_pool* pool; // Represents a thread pool for concurrent execution
-	bool _hasStartedGen = false; // Indicates if the generation has started
-	FastNoiseLite* _sn; // Instance of the SimplexNoise generator
 
-	// The master variable that is used to control the stage of the generation: This also only tracks internal ticks this is not in anyway meant to sync with the game
+	std::vector<std::string> _tileDataVectorNew;				// The new way to handle tiledata we use 
+																// a vector and index into it instead of accesing a hashmap each time we place a block
+
+	BS::thread_pool* pool;										// Represents a thread pool for concurrent execution
+	bool _hasStartedGen = false;								// Indicates if the generation has started
+	FastNoiseLite* _sn;											// Instance of the SimplexNoise generator
+
+																// The master variable that is used to control the stage of the generation:
+																// This also only tracks internal ticks this is not in anyway meant to sync with the game
 	int _tickIndex = 0;
 
-	std::vector<Chunk*> chunkArray; // Moved outside the player loop
+	std::vector<Chunk*> chunkArray;								// Moved outside the player loop
+	biomeManager* bm;
 
 	bool dataPlaced = false;
 };

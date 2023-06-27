@@ -15,7 +15,7 @@
 #include <llapi/mc/Types.hpp>
 #include <math.h>
 
-
+#define SEED 3
 
 
 __forceinline void Pass(InfinityWorld* infinity) { infinity->cont(); };
@@ -34,8 +34,11 @@ void InfinityWorld::Init()
 
     // Setup
 
-    _masterTiledata.insert({ 0u, "minecraft:air" });
-    _masterTiledata.insert({ 1u, "minecraft:stone" });
+    _tileDataVectorNew.push_back("minecraft:air");
+    _tileDataVectorNew.push_back("minecraft:stone" );
+    _tileDataVectorNew.push_back("minecraft:dirt" );
+
+    bm = new biomeManager(SEED);
 
 
 
@@ -102,7 +105,7 @@ void InfinityWorld::cont()
 InfinityWorld::InfinityWorld()
 {
 	// Just a temp simplex noise var should never be called in this funct
-	_sn = new FastNoiseLite(13213);
+	_sn = new FastNoiseLite(2222);
     _sn->SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
     _sn->SetFractalOctaves(6);
     // _sn->SetFractalType(FastNoiseLite::FractalType_DomainWarpProgressive);

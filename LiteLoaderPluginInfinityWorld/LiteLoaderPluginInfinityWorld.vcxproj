@@ -177,9 +177,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="SRC\MainApp\CreatingHandler\biomeManager\biomeManager.h" />
     <ClInclude Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseSegment\NoiseSegment.h" />
     <ClInclude Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseHandler.h" />
-    <ClInclude Include="SRC\MainApp\Palate\biomePalate.h" />
+    <ClInclude Include="SRC\MainApp\CreatingHandler\biomeManager\Palate\biomePalate.h" />
     <ClInclude Include="SRC\MainApp\CreatingHandler\Chunk.h" />
     <ClInclude Include="SRC\MainApp\InfinityWorld.h" />
     <ClInclude Include="SRC\MainApp\Util\math.hpp" />
@@ -188,10 +189,11 @@
     <ClInclude Include="SRC\MainApp\Util\WorldUtils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SRC\MainApp\CreatingHandler\biomeManager\biomeManager.cpp" />
     <ClCompile Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseSegment\NoiseSegment.cpp" />
     <ClCompile Include="SRC\MainApp\CreatingHandler\Noisehandler\NoiseHandler.cpp" />
     <ClCompile Include="SRC\MainApp\finalizeData.cpp" />
-    <ClCompile Include="SRC\MainApp\Palate\biomePalate.cpp" />
+    <ClCompile Include="SRC\MainApp\CreatingHandler\biomeManager\Palate\biomePalate.cpp" />
     <ClCompile Include="SRC\MainApp\CreatingHandler\Chunk.cpp" />
     <ClCompile Include="SRC\MainApp\InfinityWorld.cpp" />
     <ClCompile Include="SRC\dllmain.cpp" />
