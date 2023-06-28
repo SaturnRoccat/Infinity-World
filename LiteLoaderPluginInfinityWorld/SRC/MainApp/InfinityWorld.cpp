@@ -14,8 +14,9 @@
 #include <llapi/mc/Scoreboard.hpp>
 #include <llapi/mc/Types.hpp>
 #include <math.h>
+#include "Util\TickRespectiveFunction\TickRespectiveFunction.h"
 
-#define SEED 3
+#define SEED 309
 
 
 __forceinline void Pass(InfinityWorld* infinity) { infinity->cont(); };
@@ -37,8 +38,10 @@ void InfinityWorld::Init()
     _tileDataVectorNew.push_back("minecraft:air");
     _tileDataVectorNew.push_back("minecraft:stone" );
     _tileDataVectorNew.push_back("minecraft:dirt" );
+    _tileDataVectorNew.push_back("minecraft:grass" );
+    _tileDataVectorNew.push_back("minecraft:stone" );
 
-    bm = new biomeManager(SEED);
+    bm = new biomeManager(&_tileDataVectorNew, SEED);
 
 
 
@@ -78,11 +81,22 @@ void InfinityWorld::cont()
         // This should ALLWAYS be on the first tick
         case 0: {
             produceNoiseData();
+            calculatedBlocks = false;
+            calculatingBlocks = false;
             _tickIndex++;
             break;
         }
-        // This should ALLWAYS be on the last tick
+        // This handles the biome setting and making the correct blocks
         case 1: {
+            recalculateBlocks();
+            if (calculatedBlocks)
+            {
+                _tickIndex++;
+            }
+            break;
+        }
+        // This should ALLWAYS be on the last tick
+        case 2: {
             finalizeData();
             if (dataPlaced)
             {
@@ -92,7 +106,7 @@ void InfinityWorld::cont()
         }
         // We do this last pass to handle all memory cleanups that are needed becuase of a bug in LL using a std::shared_ptr for auto memory management doesnt 
         // work so we have to manage it our self and we cant delete it after use becuase the heap corrupts so i just decided to make a whole gen pass for it
-        case 2: {
+        case 3: {
             memoryCleanup();
             _tickIndex = 0;
             dataPlaced = false;

@@ -52,16 +52,7 @@ void Chunk::createChunkData()
                 }
                 else
                 {
-                    if (moisture < 0)
-                    {
-                        yPush.push_back(1);
-
-                    }
-                    else
-                    {
-                        yPush.push_back(2);
-
-                    }
+                    yPush.push_back(1);
                 }
             }
             xPush.push_back(yPush);
@@ -84,12 +75,46 @@ void Chunk::placeChunkData()
             int OverallZ = int(((worldPositionOfChunk.z * 16) + z) / 2);
             for (int y = 0; y < ySize; y++)
             {
-
-                BlockPos position(OverallX, int(y - 63), OverallZ);
-                // note this wont support multi dimensions so this needs to be changed 
-                WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
+                auto tile = _chunkData[x][y][z];
+                if (tile != 0u)
+                {
+                    BlockPos position(OverallX, int(y - 63), OverallZ);
+                    // note this wont support multi dimensions so this needs to be changed 
+                    WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
+                }
 
                 // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
+            }
+        }
+    }
+}
+
+
+void Chunk::recalculateChunkData()
+{
+    for (int x = 0; x < xSize; x++)
+    {
+        for (int z = 0; z < zSize; z++)
+        {
+            for (int y = ySize - 1; y > 0; y--)
+            {
+                int SampleY = clamp(y + 1, 0, ySize - 1);
+                auto& self = _chunkData[x][y][z];
+
+
+                if (_chunkData[x][SampleY][z] == 0u && self == 1u)
+                {
+                    _chunkData[x][y][z] = 3u;
+                    for (int yNeg = 1; yNeg < 4; yNeg++)
+                    {
+                        uint8_t tester = _chunkData[x][clamp(y - yNeg, 0, ySize - 1)][z];
+                        if (tester == 1u)
+                        {
+                            _chunkData[x][clamp(y - yNeg, 0, ySize - 1)][z] = 2u;
+                        }
+                    }
+                }
+
             }
         }
     }

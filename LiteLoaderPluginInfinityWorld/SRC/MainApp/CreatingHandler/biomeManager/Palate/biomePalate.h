@@ -20,17 +20,17 @@ public:
 	/**
 	 * Constructor for the `biomePalate` class.
 	 *
-	 * @param palateMergeData An unordered map that maps `uint8_t` keys to string values, representing the blocks and names of the biome.
+	 * @param palateMergeData An vector that stores string values, representing the blocks of the biome.
 	 * @param biomeName The name of the biome.
 	 * @param tempBias The temperature bias associated with the biome.
 	 * @param moistureBias The moisture bias associated with the biome.
 	 */
-	biomePalate(std::unordered_map<uint8_t, std::string>& palateMergeData, std::string biomeName, float tempBias, float moistureBias)
+	biomePalate(std::vector<std::string>& palateMergeData, std::string biomeName, float tempBias, float moistureBias, float maxBias = 0.2f)
 	{
 		// Copy the elements from palateMergeData into _palate
 		for (auto data : palateMergeData)
 		{
-			_palate.insert(data);
+			_palate.push_back(data);
 		}
 
 		// Set the biome name
@@ -39,19 +39,12 @@ public:
 		// Set the temperature bias and moisture bias
 		_tmpBias = tempBias;
 		_moistureBias = moistureBias;
+		_maxBias = maxBias;
 	};
 
-public:
-	/**
-	 * Sample a block from the palate based on the local index.
-	 *
-	 * @param localIndex The index used to select a block from the palate.
-	 * @return The block string sampled from the palate.
-	 */
-	__forceinline std::string sample(uint8_t localIndex = 0u)
-	{
-		return _palate.at(localIndex);
-	}
+
+	std::vector<std::string>& getPalate() { return _palate; };
+
 
 	/**
 	 * Get the name of the biome.
@@ -63,14 +56,21 @@ public:
 	/**
 	 * Get the biases associated with the biome.
 	 *
-	 * @return A pair of floats representing the temperature bias and moisture bias.
+	 * @return A pair of pairs representing the temperature bias and moisture bias min and max.
 	 */
-	__forceinline std::pair<std::pair<float, float>, float> getBiases() { return { {_tmpBias ,_moistureBias}, 0.2f }; }
+	__forceinline std::pair<std::pair<float, float>, std::pair<float, float>> getBiases() { 
+		return {
+			{_tmpBias - _maxBias, _moistureBias - _maxBias},
+			{_tmpBias + _maxBias, _moistureBias + _maxBias}
+		};
+	}
+public:
 
 private:
 	float _tmpBias; // Temperature bias
+	float _maxBias; // max bias
 	float _moistureBias; // Moisture bias
 
-	std::unordered_map<uint8_t, std::string> _palate; // Palate data (mapping from uint8_t to string)
+	std::vector<std::string> _palate; // Palate data 
 	std::string _biomeName; // Name of the biome
 };

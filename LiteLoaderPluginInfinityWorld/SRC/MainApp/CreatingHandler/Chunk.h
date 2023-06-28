@@ -74,6 +74,7 @@ public:
 
     void createChunkData();
     void placeChunkData();
+    void recalculateChunkData();
 public:
     chunkPosition worldPositionOfChunk; 
     int xSize; 

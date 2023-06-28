@@ -34,6 +34,7 @@ public:
 	void cont();
 
 public:
+	// This shouldnt get a config option due to this being the tickrate of the plugin 
 	int perpassDelay = 1 * 1;
 
 private:
@@ -43,6 +44,8 @@ private:
 	void finalizeData();
 
 	void memoryCleanup();
+
+	void recalculateBlocks();
 private:
 
 
@@ -71,4 +74,6 @@ private:
 	biomeManager* bm;
 
 	bool dataPlaced = false;
+	bool calculatedBlocks = false;
+	bool calculatingBlocks = false;
 };

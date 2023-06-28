@@ -11,6 +11,16 @@ T floor(const T& var) {
     }
 }
 
+template<typename T>
+T clamp(const T& value, const T& minValue, const T& maxValue) {
+    if (value < minValue) {
+        return minValue;
+    }
+    else if (value > maxValue) {
+        return maxValue;
+    }
+    return value;
+}
 
 __forceinline float lerp(float a, float b, float t)
 {
