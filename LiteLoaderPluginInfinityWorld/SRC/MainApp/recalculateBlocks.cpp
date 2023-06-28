@@ -40,5 +40,6 @@ void InfinityWorld::recalculateBlocks()
 			calculatedBlocks = false;
 		}
 	}
-	logger.warn("Time Taken To recalculateBlocks {}", localTimer.getTime());
+	// debuggin only 
+	// logger.warn("Time Taken To recalculateBlocks {}", localTimer.getTime());
 }

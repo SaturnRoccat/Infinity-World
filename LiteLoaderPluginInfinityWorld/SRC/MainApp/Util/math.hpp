@@ -12,7 +12,7 @@ T floor(const T& var) {
 }
 
 template<typename T>
-T clamp(const T& value, const T& minValue, const T& maxValue) {
+__forceinline T clamp(const T& value, const T& minValue, const T& maxValue) {
     if (value < minValue) {
         return minValue;
     }

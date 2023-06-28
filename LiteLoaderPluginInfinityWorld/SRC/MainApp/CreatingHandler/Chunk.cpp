@@ -76,12 +76,9 @@ void Chunk::placeChunkData()
             for (int y = 0; y < ySize; y++)
             {
                 auto tile = _chunkData[x][y][z];
-                if (tile != 0u)
-                {
-                    BlockPos position(OverallX, int(y - 63), OverallZ);
-                    // note this wont support multi dimensions so this needs to be changed 
-                    WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
-                }
+                BlockPos position(OverallX, int(y - 63), OverallZ);
+                // note this wont support multi dimensions so this needs to be changed 
+                WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
 
                 // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
             }
@@ -96,26 +93,17 @@ void Chunk::recalculateChunkData()
     {
         for (int z = 0; z < zSize; z++)
         {
-            for (int y = ySize - 1; y > 0; y--)
+            for (int y = ySize - 1; y > -1; y--)
             {
-                int SampleY = clamp(y + 1, 0, ySize - 1);
-                auto& self = _chunkData[x][y][z];
-
-
-                if (_chunkData[x][SampleY][z] == 0u && self == 1u)
+                auto& current = _chunkData[x][y][z];
+                auto& sample = _chunkData[x][clamp(y + 1, 0, ySize - 1)][z];
+                if (current == 1u && sample == 0u)
                 {
-                    _chunkData[x][y][z] = 3u;
-                    for (int yNeg = 1; yNeg < 4; yNeg++)
-                    {
-                        uint8_t tester = _chunkData[x][clamp(y - yNeg, 0, ySize - 1)][z];
-                        if (tester == 1u)
-                        {
-                            _chunkData[x][clamp(y - yNeg, 0, ySize - 1)][z] = 2u;
-                        }
-                    }
+                    current = 3u;
+                    sample = 0u;
                 }
-
             }
         }
     }
+
 }
