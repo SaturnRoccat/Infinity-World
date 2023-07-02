@@ -32,11 +32,29 @@ public:
         this->z = z;
     }
 
+
+
     chunkPosition() { x = 0; z = 0; }
 
     bool operator==(const chunkPosition& other) const
     {
         return x == other.x && z == other.z;
+    }
+
+
+    bool operator!=(const chunkPosition& other) const
+    {
+        if (this->x != other.x)
+        {
+            return true;
+        }
+
+        if (this->z != other.z)
+        {
+            return true;
+        }
+        
+        return false;
     }
     inline std::size_t hash()
     {
@@ -52,6 +70,20 @@ public:
     }
 };
 
+enum collisionSide
+{
+    TOP,
+    BOTTOM,
+    SIDE
+};
+
+struct blkPos
+{
+    int x;
+    int y;
+    int z;
+    collisionSide side;
+};
 
 class Chunk
 {
@@ -81,6 +113,12 @@ public:
     int ySize; 
     int zSize;
 private:
+    void findAirBlocks(const std::vector<std::vector<std::vector<uint8_t>>>& _chunkData, std::queue<blkPos>& airQueue);
+
+    void findTouchingStoneBlocks
+    (const std::vector<std::vector<std::vector<uint8_t>>>& _chunkData,
+        std::queue<blkPos>& airQueue,
+        std::vector<blkPos>& touchingStoneBlocks);
 private:
     std::vector<std::vector<std::vector<uint8_t>>> _chunkData;
     FastNoiseLite* _noise;

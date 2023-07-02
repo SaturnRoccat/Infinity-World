@@ -2,6 +2,8 @@
 #include "..\Util\WorldUtils.h"
 #include "..\Util\math.hpp"
 #include <math.h>
+#include <queue>
+
 extern Logger logger;
 
 void Chunk::createChunkData()
@@ -63,7 +65,7 @@ void Chunk::createChunkData()
 
 
 
-
+// 678
 void Chunk::placeChunkData()
 {
      for (int x = 0; x < xSize; x++)
@@ -75,10 +77,12 @@ void Chunk::placeChunkData()
             int OverallZ = int(((worldPositionOfChunk.z * 16) + z) / 2);
             for (int y = 0; y < ySize; y++)
             {
-                auto tile = _chunkData[x][y][z];
-                BlockPos position(OverallX, int(y - 63), OverallZ);
+                int yPosition = int(y - 62);
+                BlockPos position(OverallX, yPosition, OverallZ);
                 // note this wont support multi dimensions so this needs to be changed 
-                WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
+                // WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
+
+                WorldUtils::WUFastSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]));
 
                 // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
             }
@@ -86,24 +90,127 @@ void Chunk::placeChunkData()
     }
 }
 
-
-void Chunk::recalculateChunkData()
+void Chunk::findAirBlocks(const std::vector<std::vector<std::vector<uint8_t>>>& _chunkData, std::queue<blkPos>& airQueue)
 {
-    for (int x = 0; x < xSize; x++)
+    for (int x = 0; x < xSize; ++x)
     {
-        for (int z = 0; z < zSize; z++)
+        for (int y = 0; y < ySize; ++y)
         {
-            for (int y = ySize - 1; y > -1; y--)
+            for (int z = 0; z < zSize; ++z)
             {
-                auto& current = _chunkData[x][y][z];
-                auto& sample = _chunkData[x][clamp(y + 1, 0, ySize - 1)][z];
-                if (current == 1u && sample == 0u)
+                if (_chunkData[x][y][z] == 0u)
                 {
-                    current = 3u;
-                    sample = 0u;
+                    blkPos airPos = { x, y, z, SIDE }; // this can be any value, since we don't care about side for air blocks
+                    airQueue.push(airPos);
                 }
             }
         }
     }
-
 }
+struct CheckStruct
+{
+    int x;
+    int y;
+    int z;
+};
+
+void Chunk::findTouchingStoneBlocks
+    (const std::vector<std::vector<std::vector<uint8_t>>>& _chunkData,
+        std::queue<blkPos>& airQueue,
+        std::vector<blkPos>& touchingStoneBlocks)
+{
+    std::vector<std::vector<std::vector<bool>>> visited
+    (xSize,
+        std::vector<std::vector<bool>>(ySize,
+            std::vector<bool>(zSize,
+                false)));
+
+    while (!airQueue.empty())
+    {
+        blkPos current = airQueue.front();
+        airQueue.pop();
+
+        // check neighbors in all six directions
+        std::vector<CheckStruct> directions = 
+        { 
+            {0, 1, 0},
+            {0, -1, 0},
+            {1, 0, 0},
+            {-1, 0, 0},
+            {0, 0, 1},
+            {0, 0, -1}
+        };
+
+
+        for (CheckStruct& dir : directions)
+        {
+            /*CheckStruct calculationPosition = {
+                clamp(directions.x, 0, xSize - 1),
+                clamp(directions.y, 0, ySize - 1),
+                clamp(directions.z, 0, zSize - 1),
+            };*/
+
+
+
+
+        }
+       
+    }
+}
+
+
+void Chunk::recalculateChunkData()
+{
+    std::queue<blkPos> airQueue;
+    std::vector<blkPos> allColidingStone;
+    findAirBlocks(_chunkData, airQueue);
+    findTouchingStoneBlocks(_chunkData, airQueue, allColidingStone);
+
+
+
+    // ISTG if anyone says anything about this swtich statement i will find you
+    // And i will bonk you with a stick
+    // https://tenor.com/bVx9C.gif
+    for (auto& blk : allColidingStone)
+    {
+        switch (blk.side)
+        {
+        case TOP: {
+            _chunkData[blk.x][blk.y][blk.z] = 3u;
+            break;
+        }
+        case BOTTOM:
+        case SIDE: {
+            
+            break;
+        }
+        default:
+            break;
+        }
+    }
+}
+
+
+
+
+
+//
+//void Chunk::recalculateChunkData()
+//{
+//    for (int x = 0; x < xSize; x++)
+//    {
+//        for (int z = 0; z < zSize; z++)
+//        {
+//            for (int y = ySize - 1; y > -1; y--)
+//            {
+//                auto& current = _chunkData[x][y][z];
+//                auto& sample = _chunkData[x][clamp(y + 1, 0, ySize - 1)][z];
+//                if (current == 1u && sample == 0u)
+//                {
+//                    current = 3u;
+//                }
+//            }
+//        }
+//    }
+//
+//}

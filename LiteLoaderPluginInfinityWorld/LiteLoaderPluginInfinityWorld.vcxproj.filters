@@ -45,6 +45,15 @@
     <ClInclude Include="SRC\MainApp\CreatingHandler\biomeManager\biomeManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SRC\MainApp\Util\TickRespectiveFunction\TickRespectiveFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\Util\hooks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SRC\MainApp\Util\rebuiltTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SRC\dllmain.cpp">
@@ -81,6 +90,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SRC\MainApp\CreatingHandler\biomeManager\biomeManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\biomePass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\recalculateBlocks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SRC\MainApp\Util\TickRespectiveFunction\TickRespectiveFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

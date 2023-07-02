@@ -17,10 +17,6 @@
 struct ExtendedStreamReadResult {
 
 #define AFTER_EXTRA
-    ExtendedStreamReadResult(StreamReadResult result, std::string resultContext) {
-        this->result = result;
-        this->resultContext = resultContext;
-    }
     StreamReadResult result;
     std::string resultContext;
 #undef AFTER_EXTRA

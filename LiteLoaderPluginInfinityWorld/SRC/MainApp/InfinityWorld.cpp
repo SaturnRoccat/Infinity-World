@@ -16,7 +16,7 @@
 #include <math.h>
 #include "Util\TickRespectiveFunction\TickRespectiveFunction.h"
 
-#define SEED 309
+#define SEED 9999
 
 
 __forceinline void Pass(InfinityWorld* infinity) { infinity->cont(); };
@@ -39,7 +39,7 @@ void InfinityWorld::Init()
     _tileDataVectorNew.push_back("minecraft:stone" );
     _tileDataVectorNew.push_back("minecraft:dirt" );
     _tileDataVectorNew.push_back("minecraft:grass" );
-    _tileDataVectorNew.push_back("minecraft:stone" );
+    _tileDataVectorNew.push_back("minecraft:moss_block" );
 
     bm = new biomeManager(&_tileDataVectorNew, SEED);
 
