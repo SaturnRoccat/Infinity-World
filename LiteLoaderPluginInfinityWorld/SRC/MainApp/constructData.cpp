@@ -41,7 +41,7 @@ void InfinityWorld::produceNoiseData()
                 if (it == _loadedBeforeMap.end()) // Chunk not found in loaded chunks
                 {
                         
-                    Chunk* currentChunk = new Chunk(CurrentChunkPos, _sn, &_tileDataVectorNew, bm, 16, 192, 16); // Create a new chunk
+                    Chunk* currentChunk = new Chunk(CurrentChunkPos, _sn, &_tileDataVectorNew, bm, 16, 24, 16); // Create a new chunk
                     currentChunk->createChunkData(); // Generate chunk data
                     chunkArray.push_back(currentChunk); // Add the chunk to the array
                        _loadedBeforeMap.insert({ chunkHash, true }); // Mark the chunk as loaded

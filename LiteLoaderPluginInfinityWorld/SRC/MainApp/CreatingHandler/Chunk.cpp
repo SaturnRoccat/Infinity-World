@@ -77,12 +77,11 @@ void Chunk::placeChunkData()
             int OverallZ = int(((worldPositionOfChunk.z * 16) + z) / 2);
             for (int y = 0; y < ySize; y++)
             {
-                int yPosition = int(y - 62);
+                int yPosition = int(y);
                 BlockPos position(OverallX, yPosition, OverallZ);
                 // note this wont support multi dimensions so this needs to be changed 
-                // WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
-
-                WorldUtils::WUFastSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]));
+                WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
+                // WorldUtils::WUFastSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]));
 
                 // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
             }

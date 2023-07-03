@@ -8,7 +8,7 @@
 #include <llapi/ScheduleAPI.h>
 #include <mutex>
 #include <memory>
-
+#include "Util\WorldUtils.h"
 #include <llapi/mc/Objective.hpp>
 #include <llapi/mc/Player.hpp>
 #include <llapi/mc/Scoreboard.hpp>
@@ -80,6 +80,8 @@ void InfinityWorld::cont()
     {
         // This should ALLWAYS be on the first tick
         case 0: {
+            BlockPos blkPos = { 0, 10, 0 };
+            WorldUtils::WUFastSetBlock(blkPos, "minecraft:glass");
             produceNoiseData();
             calculatedBlocks = false;
             calculatingBlocks = false;

@@ -9,8 +9,8 @@ struct ChunkBlockPos {
         x{ 0 }, z{ 0 }, height{ 0 } {}
 
     inline constexpr ChunkBlockPos(const BlockPos& rhs) :
-        x{ static_cast<uint8_t>(rhs.x >> 4) },
-        z{ static_cast<uint8_t>(rhs.z >> 4) },
+        x{ static_cast<uint8_t>(rhs.x / 16) },
+        z{ static_cast<uint8_t>(rhs.z / 16) },
         height{ static_cast<int16_t>(rhs.y) } {}
 
 };

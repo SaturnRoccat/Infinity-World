@@ -186,6 +186,7 @@
     <ClInclude Include="SRC\MainApp\CreatingHandler\Chunk.h" />
     <ClInclude Include="SRC\MainApp\InfinityWorld.h" />
     <ClInclude Include="SRC\MainApp\Util\hooks.h" />
+    <ClInclude Include="SRC\MainApp\Util\macro.h" />
     <ClInclude Include="SRC\MainApp\Util\math.hpp" />
     <ClInclude Include="SRC\MainApp\Util\rebuiltTypes.h" />
     <ClInclude Include="SRC\version.h" />

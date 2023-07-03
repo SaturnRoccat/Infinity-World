@@ -9,10 +9,12 @@
 #include <llapi\mc\BlockSource.hpp>
 #include <llapi\mc\WorldBlockTarget.hpp>
 #include <llapi\mc\BlockActor.hpp>
+#include <llapi\mc\ChunkBlockPos.hpp>
 
 #include <llapi\HookAPI.h>
 #include "hooks.h"
-
+// #include "rebuiltTypes.h"
+extern Logger logger;
 // Basic struct used for easy storage of loose block data
 struct compoundedData
 {
@@ -57,7 +59,6 @@ public:
     {
         static BlockSource* bs;
         static int localDim = 100;
-
         if (dim != localDim)
         {
             localDim = dim;
@@ -97,28 +98,44 @@ public:
     }
 
     
-    __forceinline static bool WUFastSetBlock(ChunkBlockPos* CBP, Block* blk, BlockPos& blkPos, int dim = 0)
+    __forceinline static bool WUFastSetBlock( ChunkBlockPos* CBP, Block* blk, BlockPos& blkPos, int dim = 0)
     {
 
-        static BlockSource* blkSource;
+        BlockSource* blkSource;
         static int localDim = 100;
         static ChunkPos oldChunkPos;
         static LevelChunk* LVC;
 
 
         ChunkPos newChunkPos(blkPos.x / 16, blkPos.z / 16);
-
-        if (blkSource == nullptr || localDim != dim || oldChunkPos != newChunkPos)
+        blkSource = Level::getBlockSource(dim);
+        localDim = dim;
+        oldChunkPos = newChunkPos;
+        LVC = blkSource->getChunkAt(blkPos);
+        if (localDim != dim || oldChunkPos != newChunkPos)
         {
             localDim = dim;
-            blkSource = Level::getBlockSource(dim);
             oldChunkPos = newChunkPos;
             LVC = blkSource->getChunkAt(blkPos);
         }
-        hookedSetBlock(LVC, CBP, blk);
+
+        if (!LVC)
+        {
+            logger.fatal("LVC NULL, Local DIM: {}, blkSource: {}, oldChunkPos: X {}, Z {}", localDim, static_cast<void*>(blkSource), oldChunkPos.x, oldChunkPos.z);
+            return false;
+        }
+        else
+        {
+            // logger.info("X {}, Y{}, Z{}", blkPos.x, blkPos.y, blkPos.z);
+            // hookedSetBlock(LVC, CBP, blk);
+
+
+            hookedSetBlock(LVC, CBP, blk);
+
+            return true;
+        }
 
         // Have no idea why i do this should be a void 
-        return true;
     }
 
     __forceinline static bool WUFastSetBlock(BlockPos& pos, const std::string& name, int dim = 0, unsigned short tileData = 0u)
@@ -138,8 +155,7 @@ public:
         {
             return false;
         }
-        ChunkBlockPos CRB(pos.x >> 4, pos.y, pos.z >> 4); // Create ChunkBlockPos using the provided pos
-
+        ChunkBlockPos CRB(pos.x % 16, pos.y, pos.z % 16); // Create ChunkBlockPos using the provided pos
         return WUFastSetBlock(&CRB, BLK, pos, dim); // Call the other overload
     }
 
