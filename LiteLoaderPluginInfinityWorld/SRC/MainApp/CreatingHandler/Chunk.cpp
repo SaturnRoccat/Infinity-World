@@ -80,10 +80,10 @@ void Chunk::placeChunkData()
                 // note this wont support multi dimensions so this needs to be changed 
                 if (!WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0))
                 {
-                    logger.error("FAILED to set block in chunk! at X {}, Y {}, Z {}", OverallX, y, OverallZ);
+                    // logger.error("FAILED to set block in chunk! at X {}, Y {}, Z {}", OverallX, y, OverallZ);
                 }
 
-                // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
+                // Level::setBlock(position, 0, _tileDataVector->at(_chunkData[x][y][z]), 0u);
             }
         }
     }

@@ -88,16 +88,16 @@ void InfinityWorld::cont()
             break;
         }
         // This handles the biome setting and making the correct blocks
-        case 1: {
+       /* case 1: {
             recalculateBlocks();
             if (calculatedBlocks)
             {
                 _tickIndex++;
             }
             break;
-        }
+        }*/
         // This should ALLWAYS be on the last tick
-        case 2: {
+        case 1: {
             finalizeData();
             if (dataPlaced)
             {
@@ -107,7 +107,7 @@ void InfinityWorld::cont()
         }
         // We do this last pass to handle all memory cleanups that are needed becuase of a bug in LL using a std::shared_ptr for auto memory management doesnt 
         // work so we have to manage it our self and we cant delete it after use becuase the heap corrupts so i just decided to make a whole gen pass for it
-        case 3: {
+        case 2: {
             memoryCleanup();
             _tickIndex = 0;
             dataPlaced = false;
