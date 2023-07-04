@@ -78,14 +78,16 @@ void Chunk::placeChunkData()
                 auto tile = _chunkData[x][y][z];
                 BlockPos position(OverallX, int(y - 63), OverallZ);
                 // note this wont support multi dimensions so this needs to be changed 
-                WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0);
+                if (!WorldUtils::WUSetBlock(position, _tileDataVector->at(_chunkData[x][y][z]), 0))
+                {
+                    logger.error("FAILED to set block in chunk! at X {}, Y {}, Z {}", x, y, z);
+                }
 
                 // Level::setBlock(position, 0, _tileData->at(_chunkData[x][y][z]), 0u);
             }
         }
     }
 }
-
 
 void Chunk::recalculateChunkData()
 {
@@ -95,15 +97,82 @@ void Chunk::recalculateChunkData()
         {
             for (int y = ySize - 1; y > -1; y--)
             {
-                auto& current = _chunkData[x][y][z];
-                auto& sample = _chunkData[x][clamp(y + 1, 0, ySize - 1)][z];
-                if (current == 1u && sample == 0u)
+                BlockID& sampleBlock = _chunkData[x][y][z];
+
+                if (!calculateGround({ x, y, z }, sampleBlock))
                 {
-                    current = 3u;
-                    sample = 0u;
+                    if (!calculateWall({ x, y, z }, sampleBlock))
+                    {
+                        calculateCeiling({ x, y, z }, sampleBlock);
+                    }
                 }
             }
         }
     }
+}
 
+
+
+bool Chunk::calculateGround(packedData pkcd, BlockID& sampleBlock) 
+{
+    if (sampleBlock == 1u)
+    {
+        int sampleY = clamp<int>(pkcd.y + 1, 0, ySize - 1);
+        if (_chunkData[pkcd.x][sampleY][pkcd.z] == 0u)
+        {
+            sampleBlock = 3u;
+            // Do some special calls
+            _chunkData[pkcd.x][clamp<int>(pkcd.y - 1, 0, ySize - 1)][pkcd.z] = 2u;
+            _chunkData[pkcd.x][clamp<int>(pkcd.y - 2, 0, ySize - 1)][pkcd.z] = 2u;
+            
+            return true;
+        }
+    }
+
+    // If everything fails 
+    return false;
+}
+bool Chunk::calculateWall(packedData pkcd, BlockID& sampleBlock)
+{
+    if (sampleBlock == 1u)
+    {
+
+        for (int xOffset = -1; xOffset < 1; xOffset += 2)
+        {
+            int sampleX = clamp<int>(pkcd.x + xOffset, 0, xSize - 1);
+            if (_chunkData[sampleX][pkcd.y][pkcd.z] == 0u)
+            {
+                sampleBlock = 5u;
+                return true;
+            }
+        }
+
+        for (int zOffset = -1; zOffset < 1; zOffset += 2)
+        {
+            int sampleZ = clamp<int>(pkcd.z + zOffset, 0, zSize - 1);
+            if (_chunkData[pkcd.x][pkcd.y][sampleZ] == 0u)
+            {
+                sampleBlock = 5u;
+                return true;
+            }
+        }
+    }
+
+
+    // If everything fails
+    return false;
+}
+bool Chunk::calculateCeiling(packedData pkcd, BlockID& sampleBlock)
+{
+
+    if (sampleBlock == 1u)
+    {
+        int sampleY = clamp<int>(pkcd.y - 1, 0, ySize - 1);
+        if (_chunkData[pkcd.x][sampleY][pkcd.z] == 0u)
+        {
+            sampleBlock = 4u;
+            return true;
+        }
+    }
+    return false;
 }

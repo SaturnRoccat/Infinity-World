@@ -39,7 +39,8 @@ void InfinityWorld::Init()
     _tileDataVectorNew.push_back("minecraft:stone" );
     _tileDataVectorNew.push_back("minecraft:dirt" );
     _tileDataVectorNew.push_back("minecraft:grass" );
-    _tileDataVectorNew.push_back("minecraft:stone" );
+    _tileDataVectorNew.push_back("minecraft:moss_block" );
+    _tileDataVectorNew.push_back("minecraft:stone");
 
     bm = new biomeManager(&_tileDataVectorNew, SEED);
 

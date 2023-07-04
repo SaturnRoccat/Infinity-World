@@ -2,6 +2,11 @@
 #include <llapi\mc\Block.hpp>
 #include <llapi\mc\BlockSource.hpp>
 #include <llapi\mc\Level.hpp>
+#include <llapi\mc\ChunkPos.hpp>
+#include <llapi\LoggerAPI.h>
+
+
+extern Logger logger;
 
 // Basic struct used for easy storage of loose block data
 struct compoundedData
@@ -67,6 +72,7 @@ public:
 
 		if (!BLK)
 		{
+			logger.error("Failed To Make Block!");
 			return false;
 		}
 
