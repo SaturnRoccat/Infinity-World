@@ -31,6 +31,10 @@ public:
 		_tempMap = FastNoiseLite(seed + 2);
 		_moistureMap.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
 		_tempMap.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
+
+
+
+		addBasics();
 	};
 
 	__forceinline void addPalate(biomePalate* pal) { _palates.emplace_back(pal); };
@@ -56,7 +60,7 @@ public:
 	 
 
 private:
-
+	void addBasics();
 	bool betweenSections(std::pair<std::pair<float, float>, std::pair<float, float>>& betweenData, std::pair<float, float>& data);
 
 private:

@@ -70,3 +70,57 @@ void biomeManager::setupTileData()
 		}
 	}
 }
+
+
+void biomeManager::addBasics()
+{
+	std::vector<std::string> grassyCavesBlockTypes = {
+		"minecraft:air", // this must ALLWAYS be set to this 
+		"minecraft:stone", // This is the underground block most commonly used something like stone, or sandstone work
+		"minecraft:stone", // This is what the transition between the floor block and the underground block is
+		"minecraft:stone", // This is the floor block
+		"minecraft:stone", // This block is used on the top of the caves
+		"minecraft:stone" // This is used as a transistion block from top of the caves and underground
+	};
+	// The blocks to place go first, then the name, then the temp, then the moisture, and how much each is aloud to vary so this can still gen in a -0.2 and a 0.2 climate
+	biomePalate* grassyCaves = new biomePalate(grassyCavesBlockTypes, "grassyCaves", 0, 0, 0.6);
+
+	std::vector<std::string> snowyTundraBlockTypes = {
+	"minecraft:air",
+	"minecraft:stone",
+	"minecraft:dirt",
+	"minecraft:snow",
+	"minecraft:ice",
+	"minecraft:packed_ice"
+	};
+
+	biomePalate* snowyTundra = new biomePalate(snowyTundraBlockTypes, "snowyTundra", -0.8, 0.6, 0.2);
+	
+	std::vector<std::string> sandyDesertBlockTypes = {
+	"minecraft:air",
+	"minecraft:stone",
+	"minecraft:sandstone",
+	"minecraft:sand",
+	"minecraft:sandstone",
+	"minecraft:sandstone"
+	};
+
+	biomePalate* sandyDesert = new biomePalate(sandyDesertBlockTypes, "sandyDesert", 0.8, -0.8, 0.2);
+
+	std::vector<std::string> marshlandsBlockTypes = {
+	"minecraft:air",
+	"minecraft:stone",
+	"minecraft:dirt",
+	"minecraft:grass",
+	"minecraft:mud",
+	"minecraft:mud"
+	};
+
+	biomePalate* marshlands = new biomePalate(marshlandsBlockTypes, "marshlands", -0.4, 0.6, 0.2);
+
+	addPalate(grassyCaves);
+	addPalate(snowyTundra);
+	addPalate(sandyDesert);
+	addPalate(marshlands);
+
+}

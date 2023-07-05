@@ -7,6 +7,8 @@
 * 0 = underground block
 * 1 = surface block
 * 2 = transition
+* 3 = ceiling
+* 4 = transitionCeiling
 */
 
 
@@ -28,7 +30,7 @@ public:
 	biomePalate(std::vector<std::string>& palateMergeData, std::string biomeName, float tempBias, float moistureBias, float maxBias = 0.2f)
 	{
 		// Copy the elements from palateMergeData into _palate
-		for (auto data : palateMergeData)
+		for (auto& data : palateMergeData)
 		{
 			_palate.push_back(data);
 		}
@@ -60,8 +62,8 @@ public:
 	 */
 	__forceinline std::pair<std::pair<float, float>, std::pair<float, float>> getBiases() { 
 		return {
-			{_tmpBias - _maxBias, _moistureBias - _maxBias},
-			{_tmpBias + _maxBias, _moistureBias + _maxBias}
+			{_tmpBias - _maxBias, _tmpBias + _maxBias},
+			{_moistureBias - _maxBias , _moistureBias + _maxBias}
 		};
 	}
 public:

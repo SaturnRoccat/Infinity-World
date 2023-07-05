@@ -33,18 +33,9 @@ void InfinityWorld::Init()
     // Log the message
     logger.info(loggerMessage.c_str());
 
-    // Setup
-
-    _tileDataVectorNew.push_back("minecraft:air");
-    _tileDataVectorNew.push_back("minecraft:stone" );
-    _tileDataVectorNew.push_back("minecraft:dirt" );
-    _tileDataVectorNew.push_back("minecraft:grass" );
-    _tileDataVectorNew.push_back("minecraft:moss_block" );
-    _tileDataVectorNew.push_back("minecraft:stone");
-
     bm = new biomeManager(&_tileDataVectorNew, SEED);
 
-
+    bm->setupTileData();
 
     // Subscribe to PlayerJoinEvent
     auto playerJoinEventSubscription = Event::PlayerJoinEvent::subscribe([this](const Event::PlayerJoinEvent& event) {
@@ -88,16 +79,16 @@ void InfinityWorld::cont()
             break;
         }
         // This handles the biome setting and making the correct blocks
-       /* case 1: {
+        case 1: {
             recalculateBlocks();
             if (calculatedBlocks)
             {
                 _tickIndex++;
             }
             break;
-        }*/
+        }
         // This should ALLWAYS be on the last tick
-        case 1: {
+        case 2: {
             finalizeData();
             if (dataPlaced)
             {
@@ -107,7 +98,7 @@ void InfinityWorld::cont()
         }
         // We do this last pass to handle all memory cleanups that are needed becuase of a bug in LL using a std::shared_ptr for auto memory management doesnt 
         // work so we have to manage it our self and we cant delete it after use becuase the heap corrupts so i just decided to make a whole gen pass for it
-        case 2: {
+        case 3: {
             memoryCleanup();
             _tickIndex = 0;
             dataPlaced = false;
@@ -120,7 +111,7 @@ void InfinityWorld::cont()
 InfinityWorld::InfinityWorld()
 {
 	// Just a temp simplex noise var should never be called in this funct
-	_sn = new FastNoiseLite(2222);
+	_sn = new FastNoiseLite(32767);
     _sn->SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2S);
     _sn->SetFractalOctaves(6);
     // _sn->SetFractalType(FastNoiseLite::FractalType_DomainWarpProgressive);

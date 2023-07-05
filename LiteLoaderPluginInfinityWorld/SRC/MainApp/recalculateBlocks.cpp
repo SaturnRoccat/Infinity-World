@@ -5,51 +5,20 @@
 // Heavy pass so i think for now i will stick with calling it this way :) 
 
 
-//void InfinityWorld::recalculateBlocks()
-//{
-//	// Testing
-//	static Timer* time = new Timer();
-//
-//	const int maxTime = 35;
-//	int overallTime = 0;
-//	static int index;
-//	if (calculatingBlocks == false)
-//	{
-//		index = 0;
-//	}
-//
-//	while (overallTime < maxTime && index < chunkArray.size())
-//	{
-//		time->getTime();
-//
-//		auto& chunk = chunkArray[index];
-//		index++;
-//		chunk->recalculateChunkData();
-//
-//		overallTime += time->getTime();
-//		calculatingBlocks = true;
-//	}
-//
-//	if (index >= chunkArray.size())
-//	{
-//		calculatedBlocks = true;
-//	}
-//	else
-//	{
-//		calculatedBlocks = false;
-//	}
-//	// debuggin only 
-//	// logger.warn("Time Taken To recalculateBlocks {}", localTimer.getTime());
-//}
-
 void InfinityWorld::recalculateBlocks()
 {
 	// Testing
 	static Timer* time = new Timer();
 
-	static int index = 0;
+	const int maxTime = 35;
+	int overallTime = 0;
+	static int index;
+	if (calculatingBlocks == false)
+	{
+		index = 0;
+	}
 
-	while (index < chunkArray.size())
+	while (overallTime < maxTime && index < chunkArray.size())
 	{
 		time->getTime();
 
@@ -57,6 +26,18 @@ void InfinityWorld::recalculateBlocks()
 		index++;
 		chunk->recalculateChunkData();
 
+		overallTime += time->getTime();
+		calculatingBlocks = true;
 	}
-	calculatedBlocks = true;
+
+	if (index >= chunkArray.size())
+	{
+		calculatedBlocks = true;
+	}
+	else
+	{
+		calculatedBlocks = false;
+	}
+	// debuggin only 
+	// logger.warn("Time Taken To recalculateBlocks {}", localTimer.getTime());
 }

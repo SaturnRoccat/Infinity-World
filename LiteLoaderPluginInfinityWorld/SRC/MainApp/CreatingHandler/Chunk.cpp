@@ -100,17 +100,16 @@ void Chunk::recalculateChunkData()
 
                 if (!calculateGround({ x, y, z }, sampleBlock))
                 {
-                    if (!calculateWall({ x, y, z }, sampleBlock))
-                    {
-                        calculateCeiling({ x, y, z }, sampleBlock);
-                    }
+                    calculateCeiling({ x, y, z }, sampleBlock);
                 }
+
+                // I think my code should work
+                if(sampleBlock!=0)
+                    sampleBlock *= _bm->getBiomeIndex(int(((worldPositionOfChunk.x * 16) + x) ), y, int(((worldPositionOfChunk.z * 16) + z) ));
             }
         }
     }
 }
-
-
 
 bool Chunk::calculateGround(packedData pkcd, BlockID& sampleBlock) 
 {
@@ -169,6 +168,9 @@ bool Chunk::calculateCeiling(packedData pkcd, BlockID& sampleBlock)
         int sampleY = clamp<int>(pkcd.y - 1, 0, ySize - 1);
         if (_chunkData[pkcd.x][sampleY][pkcd.z] == 0u)
         {
+
+            _chunkData[pkcd.x][clamp<int>(pkcd.y + 2, 0, ySize - 1)][pkcd.z] = 5u;
+            _chunkData[pkcd.x][clamp<int>(pkcd.y + 3, 0, ySize - 1)][pkcd.z] = 5u;
             sampleBlock = 4u;
             return true;
         }
